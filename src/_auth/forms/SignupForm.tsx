@@ -1,5 +1,7 @@
 import { FormEvent, useState } from "react";
 import { FaFacebookSquare } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import Loader from "../../components/shared/Loader";
 
 interface UserInfo {
   email: string;
@@ -13,6 +15,8 @@ const SignupForm = () => {
   const [password, setPassword] = useState("");
   const [fullname, setFullName] = useState("");
   const [userName, setUserName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -86,7 +90,7 @@ const SignupForm = () => {
               border-gray-400 rounded-sm px-3 text-xs 
               focus:outline-none
               placeholder:text-gray-500"
-              type="password"
+              type="text"
               placeholder="Fullname"
               onChange={(e) => setFullName(e.target.value)}
             />
@@ -99,7 +103,6 @@ const SignupForm = () => {
               placeholder="Username"
               onChange={(e) => setUserName(e.target.value)}
             />
-            
           </div>
 
           <p className="text-xs text-gray-600">
@@ -143,17 +146,27 @@ const SignupForm = () => {
 
           <button
             type="submit"
+            onClick={() => setIsLoading(!isLoading)}
             className="flex w-full flex-row items-center justify-center gap-2 bg-blue-600 text-white px-16 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
-            Sign up
+            {isLoading ? (
+              <div className="flex items-center gap-2">
+                <Loader/> Loading...
+              </div>
+            ) : (
+              'Sign up'
+            )}
           </button>
         </div>
         <div className="h-fit flex flex-col gap-4 items-center justify-center text-center p-4 border border-gray-400 rounded-md w-420">
           <div className="flex flex-col text-xs">
             <p>Have a account?</p>
-            <a className="text-blue-500" href="">
+            <p
+              className="text-blue-500 cursor-pointer"
+              onClick={() => navigate("/sign-in")}
+            >
               Log in
-            </a>
+            </p>
           </div>
         </div>
       </form>
