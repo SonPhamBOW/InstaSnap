@@ -8,7 +8,7 @@ export async function createUserAccount(userInfo: INewUser) {
       ID.unique(),
       userInfo.email,
       userInfo.password,
-      userInfo.name,
+      userInfo.name
     );
 
     if (!newAccount) throw Error;
@@ -52,7 +52,19 @@ export async function saveUserToDB(user: {
 
 export async function signInAccount(user: { email: string; password: string }) {
   try {
-    const session = await account.createEmailPasswordSession(user.email, user.password);
+    const session = await account.createEmailPasswordSession(
+      user.email,
+      user.password
+    );
+    return session;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function signOutAccount() {
+  try {
+    const session = await account.deleteSession("current");
     return session;
   } catch (error) {
     console.log(error);
